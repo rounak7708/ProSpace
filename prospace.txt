@@ -1,0 +1,99 @@
+import cv2
+from PIL import Image, ImageTk
+import os
+
+class SprayAnalysisApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Spray Analysis Tool")
+        
+        self.take_photo_button = tk.Button(root, text="Take Photo", command=self.take_photo)
+        self.take_photo_button.pack(pady=10)
+        
+        self.choose_photo_button = tk.Button(root, text="Choose Photo", command=self.choose_photo)
+        self.choose_photo_button.pack(pady=10)
+        
+        self.process_save_button = tk.Button(root, text="Process & Save", command=self.process_and_save)
+        self.process_save_button.pack(pady=10)
+        
+        self.image_label = tk.Label(root)
+        self.image_label.pack(pady=10)
+
+        self.file_path = ""
+        self.image = None
+
+    def update_image_label(self, img):
+        imgtk = ImageTk.PhotoImage(image=Image.fromarray(img))
+        self.image_label.imgtk = imgtk
+        self.image_label.configure(image=imgtk)
+
+    def take_photo(self):
+        # Implement the logic to capture a photo from the webcam
+        pass
+    
+    def choose_photo(self):
+        # Implement the logic to choose a photo from the disk
+        pass
+    
+    def process_and_save(self):
+        # Implement the logic to process the image and save it as grayscale
+        pass
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = SprayAnalysisApp(root)
+    root.mainloop()
+
+def take_photo(self):
+    cam_port = 0
+    cam = cv2.VideoCapture(cam_port)
+
+    result, image = cam.read()
+
+    if result:
+        self.update_image_label(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+
+        save_path = filedialog.asksaveasfilename(defaultextension=".png",
+                                                 filetypes=[("PNG files", "*.png"), ("All files", "*.*")])
+        if save_path:
+            cv2.imwrite(save_path, image)
+            self.file_path = save_path
+            self.image = image
+    else:
+        print("No image detected. Please try again.")
+    cam.release()
+
+def choose_photo(self):
+    file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.jpg *.jpeg *.png"), ("All files", "*.*")])
+    if file_path:
+        image = cv2.imread(file_path)
+        self.update_image_label(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+        save_path = filedialog.asksaveasfilename(defaultextension=".png",
+                                                 filetypes=[("PNG files", "*.png"), ("All files", "*.*")])
+        if save_path:
+            cv2.imwrite(save_path, image)
+            self.file_path = save_path
+            self.image = image
+
+
+def process_and_save(self):
+    if self.image is not None:
+        gray_image = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
+        self.update_image_label(gray_image)
+        
+        file_name, file_extension = os.path.splitext(self.file_path)
+        gray_image_path = f"{file_name}_gray{file_extension}"
+        
+        cv2.imwrite(gray_image_path, gray_image)
+        print(f"Grayscale image saved at {gray_image_path}")
+    else:
+        print("No image to process.")
+
+
+
+pip install opencv-python pillow
+
+python spray_analysis_tool.py
+
+pip install pyinstaller
+pyinstaller --onefile spray_analysis_tool.py
